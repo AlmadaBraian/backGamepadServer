@@ -36,32 +36,28 @@ if not exist ".\ngrok.exe" (
     echo ✅ Ngrok descargado.
 )
 
-REM Verificar que esté configurado tu token de ngrok
+REM Verificar token de ngrok
 if not exist ".\ngrok_config.txt" (
     echo 🔐 No hay token de autenticación de ngrok configurado.
     echo 👉 Creá un archivo llamado ngrok_config.txt y pegá tu token de ngrok ahí.
-    echo (Podés obtenerlo gratis en https://dashboard.ngrok.com/get-started/your-authtoken)
     pause
     exit /b
 )
 
 set /p NGROK_TOKEN=<ngrok_config.txt
-
-echo 🔐 Autenticando ngrok...
 ngrok config add-authtoken %NGROK_TOKEN%
 
-REM Iniciar ngrok en background
-echo 🌍 Iniciando ngrok...
-start "" ngrok http 4000 > nul
+REM Iniciar ngrok
+start "" ngrok http 4000 >nul
 
-REM Esperar un poco para que ngrok genere la URL
-timeout /t 3 > nul
+REM Esperar 3 segundos a que arranque ngrok
+timeout /t 3 >nul
 
 REM Obtener URL pública
-for /f "delims=" %%a in ('curl -s http://127.0.0.1:4040/api/tunnels ^| findstr "public_url"') do set NGROK_URL=%%a
+for /f "delims=" %%a in ('curl -s http://127.0.0.1:4040/api/tunnels ^| findstr "public_url"') do set "NGROK_URL=%%a"
 echo 🌐 URL pública: %NGROK_URL%
 
-REM Iniciar servidor
+REM Iniciar servidor Node
 echo ▶️ Iniciando servidor Node.js...
 node server.js
 
