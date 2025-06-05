@@ -24,10 +24,10 @@ app.use(cors({
   credentials: true
 }));
 
-const user_id = test ? ("2461353807") : ("303369152");
+const user_id = test ? ("") : ("");
 const store_id = "SUC001";
 //const pos_id = [store_id + "POS001", store_id + "POS002"];
-const access_token = test ? ('APP_USR-5099722146217866-052821-400756a7ff24af622b34c38a97ade210-2461353807') : ('APP_USR-6264576526749640-052800-8706bb8698b85019d010340898c51497-303369152');
+const access_token = test ? ('APP_USR-') : ('APP_USR-');
 
 const server = http.createServer(app);
 
@@ -235,7 +235,6 @@ app.post('/registrar_pc', (req, res) => {
         pos_id: pos_id,
         store_id: store_id,
       };
-      console.log(`✅ Data 1 ${JSON.stringify(gamepadClients[ip], null, 2)}`);
     });
 
     client.on('error', (err) => {
